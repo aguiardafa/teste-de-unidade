@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,7 +33,6 @@ public class AvaliadorTest {
 
 	@After
 	public void finaliza() {
-		System.out.println("fim");
 		// Utilizamos métodos @After quando nossos testes consomem recursos que precisam
 		// ser finalizados.
 	}
@@ -134,18 +134,6 @@ public class AvaliadorTest {
 	}
 
 	@Test
-	public void deveCalcularMediaDeZeroLance() {
-		// cenario
-		Leilao leilao = new Leilao("Iphone 7");
-
-		// acao
-		leiloeiro.avalia(leilao);
-
-		// validacao
-		assertEquals(0, leiloeiro.getMediaDosLances(), 0.0001);
-	}
-
-	@Test
 	public void deveCalcularMediaDeLanceUnico() {
 		// cenario
 		Leilao leilao = new Leilao("Iphone 7");
@@ -229,13 +217,24 @@ public class AvaliadorTest {
 	}
 
 	@Test
-	public void deveEncontrarOsTresMaioresEmLeilaoSemLances() {
-		Leilao leilao = new Leilao("Playstation 3 Novo");
+	public void naoDeveAvaliarLeiloesSemNenhumLanceDado() {
+		// modelo usando fail
+		try {
+			Leilao leilao = new LeilaoDataBuilder().leilao("Playstation 3 Novo").constroi();
+
+			leiloeiro.avalia(leilao);
+			Assert.fail();
+		} catch (RuntimeException e) {
+			// deu certo!
+		}
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void naoDeveAvaliarLeiloesSemNenhumLanceDadoJUnit4() {
+		// a partir do JUnit4
+		// Caso a exceção não seja lançada ou não bata com a informada, o teste falhará.
+		Leilao leilao = new LeilaoDataBuilder().leilao("Playstation 3 Novo").constroi();
 
 		leiloeiro.avalia(leilao);
-
-		List<Lance> maiores = leiloeiro.getTresMaiores();
-
-		assertEquals(0, maiores.size());
 	}
 }
