@@ -2,15 +2,50 @@ package br.com.caelum.leilao.dominio;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import br.com.caelum.leilao.databuilder.LeilaoDataBuilder;
+
 public class LeilaoTest {
+	private Usuario steveJobs;
+	private Usuario billGates;
+	private Leilao leilao;
+	
+	@Before
+	public void setUp() {
+		// executa este método antes da execução de cada teste
+		// instancia tudo que é necessário para o cenario dos testes
+		this.steveJobs = new Usuario("Steve Jobs");
+		this.billGates = new Usuario("Bill Gates");
+		this.leilao = new LeilaoDataBuilder().leilao("Macbook Pro 15").constroi();
+	}
+	
+	@After
+	public void finaliza() {
+		System.out.println("fim");
+		// Utilizamos métodos @After quando nossos testes consomem recursos que precisam
+		// ser finalizados.
+	}
+	
+	@BeforeClass
+	public static void testandoBeforeClass() {
+	  System.out.println("before class");
+	}
+
+	@AfterClass
+	public static void testandoAfterClass() {
+	  System.out.println("after class");
+	}
+	
 	@Test
 	public void deveReceberUmLance() {
-		Leilao leilao = new Leilao("Macbook Pro 15");
 		assertEquals(0, leilao.getLances().size());
 
-		leilao.propoe(new Lance(new Usuario("Steve Jobs"), 2000));
+		leilao.propoe(new Lance(steveJobs, 2000));
 
 		assertEquals(1, leilao.getLances().size());
 		assertEquals(2000, leilao.getLances().get(0).getValor(), 0.00001);
@@ -18,9 +53,8 @@ public class LeilaoTest {
 
 	@Test
 	public void deveReceberVariosLances() {
-		Leilao leilao = new Leilao("Macbook Pro 15");
-		leilao.propoe(new Lance(new Usuario("Steve Jobs"), 2000));
-		leilao.propoe(new Lance(new Usuario("Steve Wozniak"), 3000));
+		leilao.propoe(new Lance(steveJobs, 2000));
+		leilao.propoe(new Lance(billGates, 3000));
 
 		assertEquals(2, leilao.getLances().size());
 		assertEquals(2000, leilao.getLances().get(0).getValor(), 0.00001);
@@ -33,9 +67,6 @@ public class LeilaoTest {
 	// - Uma pessoa não pode dar mais do que cinco lances no mesmo leilão.
 	@Test
 	public void naoDeveAceitarDoisLancesSeguidosDoMesmoUsuario() {
-		Leilao leilao = new Leilao("Macbook Pro 15");
-		Usuario steveJobs = new Usuario("Steve Jobs");
-
 		leilao.propoe(new Lance(steveJobs, 2000));
 		leilao.propoe(new Lance(steveJobs, 3000));
 
@@ -45,10 +76,6 @@ public class LeilaoTest {
 
 	@Test
 	public void naoDeveAceitarMaisDoQue5LancesDeUmMesmoUsuario() {
-		Leilao leilao = new Leilao("Macbook Pro 15");
-		Usuario steveJobs = new Usuario("Steve Jobs");
-		Usuario billGates = new Usuario("Bill Gates");
-
 		leilao.propoe(new Lance(steveJobs, 2000));
 		leilao.propoe(new Lance(billGates, 3000));
 		leilao.propoe(new Lance(steveJobs, 4000));
@@ -70,10 +97,6 @@ public class LeilaoTest {
 	}
 	@Test
 	public void deveDobrarUltimoLanceDeUmUsuario() {
-		Leilao leilao = new Leilao("Macbook Pro 15");
-		Usuario steveJobs = new Usuario("Steve Jobs");
-		Usuario billGates = new Usuario("Bill Gates");
-
 		leilao.propoe(new Lance(steveJobs, 2000));
 		leilao.propoe(new Lance(billGates, 3000));
 
@@ -88,10 +111,6 @@ public class LeilaoTest {
 	}
 	@Test
 	public void naoDeveDobrarUltimoLanceDeUmUsuarioSemLance() {
-		Leilao leilao = new Leilao("Macbook Pro 15");
-		Usuario steveJobs = new Usuario("Steve Jobs");
-		Usuario billGates = new Usuario("Bill Gates");
-
 		leilao.propoe(new Lance(billGates, 3000));
 
 		// nao deve dobra ultimo lance do usuário que não fez lance
@@ -106,10 +125,6 @@ public class LeilaoTest {
 	
 	@Test
 	public void naoDeveDobrarLanceDeUmUsuarioQueFezUltimoLance() {
-		Leilao leilao = new Leilao("Macbook Pro 15");
-		Usuario steveJobs = new Usuario("Steve Jobs");
-		Usuario billGates = new Usuario("Bill Gates");
-
 		leilao.propoe(new Lance(steveJobs, 2000));
 		leilao.propoe(new Lance(billGates, 3000));
 
@@ -124,10 +139,6 @@ public class LeilaoTest {
 	}
 	@Test
 	public void naoDeveDobrarLanceDeUmUsuarioQueFezMaisDoQue5Lances() {
-		Leilao leilao = new Leilao("Macbook Pro 15");
-		Usuario steveJobs = new Usuario("Steve Jobs");
-		Usuario billGates = new Usuario("Bill Gates");
-
 		leilao.propoe(new Lance(steveJobs, 2000));
 		leilao.propoe(new Lance(billGates, 3000));
 		leilao.propoe(new Lance(steveJobs, 4000));
