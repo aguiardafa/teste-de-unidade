@@ -57,11 +57,10 @@ public class AvaliadorTest {
 
 	@Test
 	public void deveEntenderLancesEmOrdemDecrescente() {
-		Leilao leilao = new Leilao("Playstation 3 Novo");
-
-		leilao.propoe(new Lance(jose, 400.0));
-		leilao.propoe(new Lance(joao, 300.0));
-		leilao.propoe(new Lance(maria, 250.0));
+		Leilao leilao = new LeilaoDataBuilder().leilao("Playstation 3 Novo")
+				.lance(jose, 400.0)
+				.lance(joao, 300.0)
+				.lance(maria, 250.0).constroi();
 
 		// executando a acao
 		leiloeiro.avalia(leilao);
@@ -77,14 +76,13 @@ public class AvaliadorTest {
 	@Test
 	public void deveEntenderLancesSemOrdemDefinida() {
 		// cenario
-		Leilao leilao = new Leilao("Playstation 3 Novo");
-
-		leilao.propoe(new Lance(jose, 290.0));
-		leilao.propoe(new Lance(maria, 250.0));
-		leilao.propoe(new Lance(joao, 270.0));
-		leilao.propoe(new Lance(maria, 285.0));
-		leilao.propoe(new Lance(joao, 300.0));
-		leilao.propoe(new Lance(jose, 400.0));
+		Leilao leilao = new LeilaoDataBuilder().leilao("Playstation 3 Novo")
+				.lance(jose, 290.0)
+				.lance(maria, 250.0)
+				.lance(joao, 270.0)
+				.lance(maria, 285.0)
+				.lance(joao, 300.0)
+				.lance(jose, 400.0).constroi();
 
 		// executando a acao
 		leiloeiro.avalia(leilao);
@@ -100,11 +98,10 @@ public class AvaliadorTest {
 	@Test
 	public void deveCalcularMediaDosLancesArredondada() {
 		// cenario
-		Leilao leilao = new Leilao("Playstation 3 Novo");
-
-		leilao.propoe(new Lance(jose, 400.0));
-		leilao.propoe(new Lance(joao, 300.0));
-		leilao.propoe(new Lance(maria, 250.0));
+		Leilao leilao = new LeilaoDataBuilder().leilao("Playstation 3 Novo")
+				.lance(jose, 400.0)
+				.lance(joao, 300.0)
+				.lance(maria, 250.0).constroi();
 
 		// executando a acao
 		leiloeiro.avalia(leilao);
@@ -118,11 +115,10 @@ public class AvaliadorTest {
 	@Test
 	public void deveCalcularMediaDosLancesExata() {
 		// cenario
-		Leilao leilao = new Leilao("Playstation 3 Novo");
-
-		leilao.propoe(new Lance(jose, 300.0));
-		leilao.propoe(new Lance(joao, 300.0));
-		leilao.propoe(new Lance(maria, 300.0));
+		Leilao leilao = new LeilaoDataBuilder().leilao("Playstation 3 Novo")
+				.lance(jose, 300.0)
+				.lance(joao, 300.0)
+				.lance(maria, 300.0).constroi();
 
 		// executando a acao
 		leiloeiro.avalia(leilao);
@@ -136,8 +132,8 @@ public class AvaliadorTest {
 	@Test
 	public void deveCalcularMediaDeLanceUnico() {
 		// cenario
-		Leilao leilao = new Leilao("Iphone 7");
-		leilao.propoe(new Lance(joao, 300.0));
+		Leilao leilao = new LeilaoDataBuilder().leilao("Playstation 3 Novo")
+				.lance(joao, 300.0).constroi();
 
 		// acao
 		leiloeiro.avalia(leilao);
@@ -149,8 +145,8 @@ public class AvaliadorTest {
 	@Test
 	public void deveEntenderLanceUnico() {
 		// cenario
-		Leilao leilao = new Leilao("Iphone 7");
-		leilao.propoe(new Lance(joao, 300.0));
+		Leilao leilao = new LeilaoDataBuilder().leilao("Playstation 3 Novo")
+				.lance(joao, 300.0).constroi();
 
 		// acao
 		leiloeiro.avalia(leilao);
@@ -168,13 +164,12 @@ public class AvaliadorTest {
 
 	@Test
 	public void deveEncontrarOsTresMaioresLances() {
-		Leilao leilao = new Leilao("Playstation 3 Novo");
-
-		leilao.propoe(new Lance(joao, 200.0));
-		leilao.propoe(new Lance(maria, 100.0));
-		leilao.propoe(new Lance(joao, 300.0));
-		leilao.propoe(new Lance(maria, 400.0));
-		leilao.propoe(new Lance(joao, 700.0));
+		Leilao leilao = new LeilaoDataBuilder().leilao("Playstation 3 Novo")
+				.lance(joao, 200.0)
+				.lance(maria, 100.0)
+				.lance(joao, 300.0)
+				.lance(maria, 400.0)
+				.lance(joao, 700.0).constroi();
 
 		leiloeiro.avalia(leilao);
 
@@ -188,10 +183,9 @@ public class AvaliadorTest {
 
 	@Test
 	public void deveEncontrarOsTresMaioresEmDoisLances() {
-		Leilao leilao = new Leilao("Playstation 3 Novo");
-
-		leilao.propoe(new Lance(joao, 200.0));
-		leilao.propoe(new Lance(maria, 400.0));
+		Leilao leilao = new LeilaoDataBuilder().leilao("Playstation 3 Novo")
+				.lance(joao, 200.0)
+				.lance(maria, 400.0).constroi();
 
 		leiloeiro.avalia(leilao);
 
@@ -204,9 +198,8 @@ public class AvaliadorTest {
 
 	@Test
 	public void deveEncontrarOsTresMaioresEmLanceUnico() {
-		Leilao leilao = new Leilao("Playstation 3 Novo");
-
-		leilao.propoe(new Lance(joao, 200.0));
+		Leilao leilao = new LeilaoDataBuilder().leilao("Playstation 3 Novo")
+				.lance(joao, 200.0).constroi();
 
 		leiloeiro.avalia(leilao);
 
