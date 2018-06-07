@@ -1,6 +1,7 @@
 package br.com.caelum.leilao.servico;
 
 
+import static br.com.caelum.matcher.LeilaoMatcher.temUmLance;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
@@ -91,5 +92,17 @@ public class AvaliadorTestHamcrest {
                 new Lance(joao, 300)
         ));
 	}
+	
+	@Test
+    public void deveReceberUmLance() {
+        Leilao leilao = new LeilaoDataBuilder().leilao("Macbook Pro 15").constroi();
+        assertThat(leilao.getLances().size(), equalTo(0));
 
+        Lance lance = new Lance(joao, 2000);
+        leilao.propoe(lance);
+
+        assertThat(leilao.getLances().size(), equalTo(1));
+        // uso de matcher customizado
+        assertThat(leilao, temUmLance(lance));
+    }
 }
